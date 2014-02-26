@@ -20,6 +20,10 @@
 	 overflow-y:auto;
 }
 
+.fit_screen{
+	/*height:100%;*/
+}
+
 li {
 	list-style-type:none;
 }
