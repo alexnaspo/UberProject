@@ -31,7 +31,7 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', routes.index);
+app.get('/uber', routes.index);
 app.get('/locations', location.list);
 app.post('/location', location.create);
 app.get('/location/:id', location.get);

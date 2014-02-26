@@ -1,6 +1,23 @@
 var Location = Backbone.Model.extend({
     urlRoot:"/location",
 
+    validation: {
+        title: {
+            required: true,
+            msg: 'The name field is required!'
+        },
+        address: {
+            required: true,
+            msg: 'The name field is required!'
+        },
+        lat: {
+            required: true
+        },
+        lng: {
+            required: true
+        }
+    }
+
 });
  
 var Locations = Backbone.Collection.extend({    
@@ -19,6 +36,7 @@ var CreateLocationView = Backbone.View.extend({
     initialize: function(options){
          _.bindAll(this, "updateLocation");
         options.vent.bind("updateLocation", this.updateLocation);
+        Backbone.Validation.bind(this);
         this.render();
     },
 
@@ -64,13 +82,15 @@ var CreateLocationView = Backbone.View.extend({
             this.model.set({id: this.model.get('_id')});
         }
         this.model.set(data);
-
-        this.model.save(null, {
-            success: function (model, response) {
-                self.collection.add(model);
-                self.updateView(new Location());
-            }
-        });
+        if(this.model.isValid(true)){
+            this.model.save(null, {
+                success: function (model, response) {
+                    self.collection.add(model);
+                    self.updateView(new Location());
+                }
+            });
+        }
+        
         
         return false    
     }
@@ -138,14 +158,14 @@ var vent = _.extend({}, Backbone.Events);
 var locations = new Locations();
 locations.fetch({
     success: function(){
+
         locationListView = new LocationListView({ collection:locations, vent:vent });        
         createLocationView = new CreateLocationView({ model: new Location(), collection:locations, vent:vent});        
         $("#location_list_container").append(locationListView.el);        
+        $(document).foundation();
     }
 });     
 
-
-    
 
 $.fn.serializeObject = function(){
     var o = {};

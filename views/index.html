@@ -5,7 +5,11 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
 <script type="text/javascript" src='http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.0/backbone-min.js'></script>
+<script type="text/javascript" src='http://cdnjs.cloudflare.com/ajax/libs/backbone.validation/0.8.2/backbone-validation-min.js'></script>
+
+
 <script src="http://cdnjs.cloudflare.com/ajax/libs/foundation/5.1.1/js/foundation.min.js" type="text/javascript"></script> 
+<script type="text/javascript" src="javascripts/foundation.abide.js"></script>
 <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/geocomplete/1.4/jquery.geocomplete.min.js" type="text/javascript"></script> 
 <link href='http://fonts.googleapis.com/css?family=Gafata' rel='stylesheet' type='text/css'>
@@ -27,9 +31,14 @@
 	max-width: 100%;
 }
 
-/*body, html{
-	height:100%;
-}*/
+#location_list_container{
+	   overflow-x:hidden;
+	   overflow-y:auto;
+}
+
+body, html{
+	height: 100%;
+}
 
 li{
 	list-style-type: none;
@@ -72,29 +81,34 @@ h1{
 
 <script type="text/template" id="create_location_template">
 
-	<form action="#" id="location_form">
-		
-		<h1> Favorite Destinations </h1>
-			<div class="row">
-				<div class="small-8 large-8 large-offset-2 columns end">				 
-						name : <input type="text" name="title" value=<%= typeof(title)!== 'undefined' ?  title : '' %>>						
-		    			Address : <input class="geocomplete" type="text" id="address" name="address" >
-		    			<input class="geocomplete" type="hidden" name="lat" type="text" value="">
-  						<input class="geocomplete" type="hidden" name="lng" type="text" value="">		    		    			
-				</div>
-			</div>
-			<div class="row">				
-				<div class="small-6 large-16 large-offset-3 small-offset-3 expand columns">	
-					<button class="button expand" type="submit" id="create_location">add</button>				
-				</div>
-			</div>
-			<div class="row">
-				<div class="small-12 large-12 columns">	
-					<div class="map_canvas" style="width: 100%;height: 400px;margin: 10px 0 10px 0;border: 10px solid #FFF;"></div>					  	
-				</div>
-			</div>	
-	</form>
+<form data-abide>
+	<div class="row">
+      <div class="large-12 columns">
+        <label for="title">Name <small>required</small>
+          <input type="text" placeholder="ex: Home" name="title"  required value=<%= typeof(title)!== 'undefined' ?  title : '' %>>						
+        </label>
+        <small class="error">The name field is required!</small>
+      </div>
+      <div class="large-12 columns">
+        <label for="address">Address <small>required</small>
+          <input type="text" id="address" name="address" required>
+        </label>
+        <small class="error">The address field is required!</small>
+      </div>
+    </div>
+    <input class="geocomplete" type="hidden" name="lat" type="text" value="">
+  	<input class="geocomplete" type="hidden" name="lng" type="text" value="">		    		    			
+    <button type="submit" id="create_location" class="medium button green">Submit</button>
+    <div class="row">
+		<div class="small-12 large-12 columns">	
+			<div class="map_canvas" style="width: 100%;height: 400px;margin: 10px 0 10px 0;border: 10px solid #FFF;"></div>					  	
+		</div>
+	</div>	
+</form>
+
 </script>
+
+
 
 <div class="container">
 	<div id="app_container" class="row">
