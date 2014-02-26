@@ -1,23 +1,6 @@
 var Location = Backbone.Model.extend({
     urlRoot:"/location",
 
-    validation: {
-        title: {
-            required: true,
-            msg: 'The name field is required!'
-        },
-        address: {
-            required: true,
-            msg: 'The name field is required!'
-        },
-        lat: {
-            required: true
-        },
-        lng: {
-            required: true
-        }
-    }
-
 });
  
 var Locations = Backbone.Collection.extend({    
@@ -36,7 +19,6 @@ var CreateLocationView = Backbone.View.extend({
     initialize: function(options){
          _.bindAll(this, "updateLocation");
         options.vent.bind("updateLocation", this.updateLocation);
-        Backbone.Validation.bind(this);
         this.render();
     },
 
@@ -82,14 +64,12 @@ var CreateLocationView = Backbone.View.extend({
             this.model.set({id: this.model.get('_id')});
         }
         this.model.set(data);
-        if(this.model.isValid(true)){
-            this.model.save(null, {
-                success: function (model, response) {
-                    self.collection.add(model);
-                    self.updateView(new Location());
-                }
-            });
-        }
+        this.model.save(null, {
+            success: function (model, response) {
+                self.collection.add(model);
+                self.updateView(new Location());
+            }
+        });
         
         
         return false    

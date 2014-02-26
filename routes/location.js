@@ -18,7 +18,7 @@ var LocationModel = mongoose.model('Location', Location);
 exports.list = function(req, res){
     LocationModel.find({}, function (err, locations) {
     	if(err){
-    		return res.send(err);
+    		return res.send(new Error('failed to get all locations', err));
     	} else {
     		return res.send(locations);	
     	}
@@ -36,10 +36,10 @@ exports.create = function(req, res){
 	});
 
 	location.save(function (err) {
-		if (!err) {
-		  return console.log(location);
+		if (err) {
+			return res.send(new Error('failed to create location', err));
 		} else {
-		  return console.log(err);
+		 	return res.send(location);
 		}	
 	});
   return res.send(location);
@@ -51,27 +51,19 @@ exports.get = function(req, res){
 		if (!err) {
 		  return res.send(location);
 		} else {
-		  return res.send(err);
+		  return res.send(new Error('failed to get location', err));
 		}	
 	});
 };
 
 exports.delete = function(req, res){
-	var id = req.params.id;
-	//@TODO change to findOneAndDelete
-	LocationModel.findById(id, function (err, location) {
-		if (!err) {
-			location.remove(function (error, response){
-				if(error){
-					return res.send(err);
-				} else {
-					return res.send("success");
-				}
-			});
-
+	var query = {_id: mongoose.Types.ObjectId(req.params.id)};
+	LocationModel.remove(query, function(err, response){
+		if(err){
+			res.send(new Error('failed to delete location', err));
 		} else {
-		  return res.send(err);
-		}	
+			res.send(response);
+		}
 	});
 
 };
@@ -88,11 +80,9 @@ exports.update = function(req, res){
 
 	LocationModel.findOneAndUpdate(query, newLocation, function(err, response){
 		if(err){
-			res.send(err);
+			res.send(new Error('failed to update location', err));
 		} else {
 			res.send(response);
 		}
 	});
 };
-
-
