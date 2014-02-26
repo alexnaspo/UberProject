@@ -1,19 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/uber_test_database');
-
-var Schema = mongoose.Schema; //Schema.ObjectId
- 
-var Location = new Schema({
-    lat: { type: Number, required: true},
-    lng: { type: Number, required: true},
-    address: { 
-        type: String, 
-        required: true, 
-    },
-    title: { type: String, required: true, min: 0 }
-});
-
-var LocationModel = mongoose.model('Location', Location);
+var LocationModel = require('../models/location').LocationModel;
 
 exports.list = function(req, res){
     LocationModel.find({}, function (err, locations) {

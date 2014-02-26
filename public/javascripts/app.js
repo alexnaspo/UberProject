@@ -86,6 +86,7 @@ var LocationView = Backbone.View.extend({
 
     initialize: function(options){
         this.vent = options.vent;
+        //update view accordingly when model changes
         this.listenTo(this.model, "destroy", this.destroy);
         this.listenTo(this.model, "change", this.render);
         this.render();
@@ -136,11 +137,11 @@ var LocationListView = Backbone.View.extend({
 var createLocationView;
 var vent = _.extend({}, Backbone.Events);
 var locations = new Locations();
+createLocationView = new CreateLocationView({ model: new Location(), collection:locations, vent:vent});        
 locations.fetch({
     success: function(){
-
         locationListView = new LocationListView({ collection:locations, vent:vent });        
-        createLocationView = new CreateLocationView({ model: new Location(), collection:locations, vent:vent});        
+        
         $("#location_list_container").append(locationListView.el);        
         $(document).foundation();
     }

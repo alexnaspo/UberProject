@@ -8,9 +8,9 @@ var routes = require('./routes');
 var location = require('./routes/location');
 var http = require('http');
 var path = require('path');
-var mongoose = require('mongoose');
 
 var app = express();
+
 
 
 // all environments
@@ -31,7 +31,7 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/uber', routes.index);
+app.get('/', routes.index);
 app.get('/locations', location.list);
 app.post('/location', location.create);
 app.get('/location/:id', location.get);
