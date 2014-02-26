@@ -10,7 +10,7 @@ var LocationSchema = new Schema({
         type: String, 
         required: true, 
     },
-    title: { type: String, required: true, min: 0 }
+    title: { type: String, required: true }
 });
 
 var locationModel = mongoose.model('Location', LocationSchema);

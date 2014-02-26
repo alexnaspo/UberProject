@@ -18,7 +18,14 @@ var CreateLocationView = Backbone.View.extend({
 
     initialize: function(options){
          _.bindAll(this, "updateLocation");
-        options.vent.bind("updateLocation", this.updateLocation);
+        options.vent.bind("updateLocation", this.updateLocation);        
+        locations.fetch({
+            success: function(){
+                locationListView = new LocationListView({ collection:locations, vent:vent });                        
+                $("#location_list_container").append(locationListView.el);        
+                $(document).foundation();
+            }
+        }); 
         this.render();
     },
 
@@ -134,32 +141,7 @@ var LocationListView = Backbone.View.extend({
 
 });
 
-var createLocationView;
+
 var vent = _.extend({}, Backbone.Events);
 var locations = new Locations();
-createLocationView = new CreateLocationView({ model: new Location(), collection:locations, vent:vent});        
-locations.fetch({
-    success: function(){
-        locationListView = new LocationListView({ collection:locations, vent:vent });        
-        
-        $("#location_list_container").append(locationListView.el);        
-        $(document).foundation();
-    }
-});     
-
-
-$.fn.serializeObject = function(){
-    var o = {};
-    var a = this.serializeArray();
-    $.each(a, function() {
-        if (o[this.name] !== undefined) {
-            if (!o[this.name].push) {
-                o[this.name] = [o[this.name]];
-            }
-            o[this.name].push(this.value || '');
-        } else {
-            o[this.name] = this.value || '';
-        }
-    });
-    return o;
-};
+var createLocationView; = new CreateLocationView({ model: new Location(), collection:locations, vent:vent});        
