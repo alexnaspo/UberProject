@@ -36,8 +36,7 @@ var CreateLocationView = Backbone.View.extend({
             success: function(){
                 self.updateView(location);
             }
-        });
-        
+        });        
     },
 
     updateView: function(location){
@@ -64,8 +63,9 @@ var CreateLocationView = Backbone.View.extend({
     },
 
     save: function(e) { 
-        self = this;      
+        // save or update object
         e.preventDefault();
+        self = this;              
         data = $('form').serializeObject();
         if(this.model.get('_id')){
             this.model.set({id: this.model.get('_id')});
@@ -76,9 +76,7 @@ var CreateLocationView = Backbone.View.extend({
                 self.collection.add(model);
                 self.updateView(new Location());
             }
-        });
-        
-        
+        });                
         return false    
     }
 }); 
@@ -138,10 +136,9 @@ var LocationListView = Backbone.View.extend({
         this.$el.append(locationView.el);
         return this;
     }
-
 });
 
 
 var vent = _.extend({}, Backbone.Events);
 var locations = new Locations();
-var createLocationView; = new CreateLocationView({ model: new Location(), collection:locations, vent:vent});        
+var createLocationView = new CreateLocationView({ model: new Location(), collection:locations, vent:vent});        
