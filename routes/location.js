@@ -10,7 +10,7 @@ var Location = new Schema({
         type: String, 
         required: true, 
     },
-    name: { type: String, required: true, min: 0 }
+    title: { type: String, required: true, min: 0 }
 });
 
 var LocationModel = mongoose.model('Location', Location);
@@ -29,7 +29,7 @@ exports.list = function(req, res){
 exports.create = function(req, res){
 	var location;
 	location = new LocationModel({
-		name: req.body.name,
+		title: req.body.title,
 		address: req.body.address,
 		lat: req.body.lat,
 		lng: req.body.lng,		
@@ -80,7 +80,7 @@ exports.update = function(req, res){
 	var query = {_id: mongoose.Types.ObjectId(req.params.id)};
 	var newLocation;
 	newLocation = {
-		name: req.body.name,
+		title: req.body.title,
 		address: req.body.address,
 		lat: req.body.lat,
 		lng: req.body.lng,		
