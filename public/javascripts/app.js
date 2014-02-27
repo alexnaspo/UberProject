@@ -30,13 +30,17 @@ var CreateLocationView = Backbone.View.extend({
     },
 
     updateLocation: function(location){
-        self = this;
-        this.model.set(location);
-        this.model.destroy({
-            success: function(){
-                self.updateView(location);
-            }
-        });        
+        self = this;        
+        if(!this.model.get('_id')){
+            this.model.destroy({
+                success: function(){
+                    self.updateView(location);
+                }
+            });        
+        } else {
+            this.model.set(location);
+        }
+
     },
 
     updateView: function(location){
@@ -46,7 +50,6 @@ var CreateLocationView = Backbone.View.extend({
 
     render: function(){
         $("#create_location_container").html(this.template(this.model.toJSON()));
-
         //if we are editing, default map with address
         if(this.model.get("address")){
             address = this.model.get("address");
